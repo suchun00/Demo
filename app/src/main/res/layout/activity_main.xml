@@ -9,8 +9,73 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sc.testdemo.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        <TextView
+            android:layout_width="200px"
+            android:layout_height="wrap_content"
+            android:text="内容"
+            android:textSize="60px"
+            android:layout_alignBottom="@+id/et"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView" />
+        <TextView
+            android:layout_width="200px"
+            android:layout_height="wrap_content"
+            android:text="编号"
+            android:textSize="60px"
+            android:layout_alignBottom="@+id/et1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView2" />
+
+        <EditText
+            android:layout_width="500px"
+            android:layout_height="wrap_content"
+            android:id="@+id/et"
+            android:layout_marginTop="32dp"
+            android:layout_below="@+id/et1"
+            android:layout_alignRight="@+id/et1"
+            android:layout_alignEnd="@+id/et1" />
+        <EditText
+            android:layout_width="500px"
+            android:layout_height="wrap_content"
+            android:id="@+id/et1"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView2"
+            android:layout_toEndOf="@+id/textView2" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt1"
+            android:text="消息推送"
+            android:layout_alignBaseline="@+id/bt2"
+            android:layout_alignBottom="@+id/bt2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt2"
+            android:text="开启服务"
+            android:layout_marginTop="55dp"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bt3"
+            android:text="关闭服务"
+            android:layout_marginTop="68dp"
+            android:layout_below="@+id/bt1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/netAddress"
+            android:text="更改网址"
+            android:layout_alignTop="@+id/bt3"
+            android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
