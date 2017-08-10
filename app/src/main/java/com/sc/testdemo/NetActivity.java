@@ -39,9 +39,16 @@ public class NetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 address = net.getText().toString().trim();
-                dbUtils.update(address);
-                Toast.makeText(getApplicationContext(),"更改网址成功",Toast.LENGTH_SHORT).show();
-                NetActivity.this.finish();
+                try {
+                    dbUtils.update(address);
+                    String[]ip = address.split("N");
+                    dbUtils.addIp("ningguo",ip[0]);
+                    Toast.makeText(getApplicationContext(),"更改网址成功",Toast.LENGTH_SHORT).show();
+                    NetActivity.this.finish();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
             }
         });
         bt2.setOnClickListener(new View.OnClickListener() {
