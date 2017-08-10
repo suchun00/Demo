@@ -2,8 +2,10 @@ package com.sc.utils;
 
 import android.database.Cursor;
 
+import com.sc.entity.IpAddress;
 import com.sc.entity.NEWS;
 import com.sc.entity.NetAddress;
+import com.sc.greendao.greendao.gen.IpAddressDao;
 import com.sc.greendao.greendao.gen.NEWSDao;
 import com.sc.greendao.greendao.gen.NetAddressDao;
 
@@ -17,6 +19,8 @@ import java.util.Map;
 public class DBUtils {
     private NetAddressDao netAddressDao;
     private NEWSDao newsDao;
+    private IpAddressDao ipAddressDao;
+
     public  String getNetAddress(){
         netAddressDao = App.getInstance().getSession().getNetAddressDao();
         List<NetAddress> netList = netAddressDao.loadAll();
@@ -50,6 +54,22 @@ public class DBUtils {
             netAddress.setNetAddress("http://172.23.0.182:8088/upload/abnormal/send.action");
             netAddressDao.update(netAddress);
         }
+    }
+    public void addIp(String ipName, String ipAddress){
+        ipAddressDao = App.getInstance().getSession().getIpAddressDao();
+        String net = getNetAddress();
+        if(net!=null){
+            ipAddressDao.deleteAll();
+            IpAddress ip = new IpAddress(null, ipName , ipAddress);
+            ipAddressDao.insert(ip);
+        }
+    }
+    public String getIp(){
+        ipAddressDao = App.getInstance().getSession().getIpAddressDao();
+        String result = null;
+        List<IpAddress>ipList = ipAddressDao.loadAll();
+        result = ipList.get(0).getIpAddress();
+        return result;
     }
     /*public String getLastMessageContent(){
         String content = null;

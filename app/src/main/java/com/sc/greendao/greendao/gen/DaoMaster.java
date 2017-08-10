@@ -23,12 +23,14 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(Database db, boolean ifNotExists) {
         NetAddressDao.createTable(db, ifNotExists);
         NEWSDao.createTable(db, ifNotExists);
+        IpAddressDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
         NetAddressDao.dropTable(db, ifExists);
         NEWSDao.dropTable(db, ifExists);
+        IpAddressDao.dropTable(db, ifExists);
     }
 
     /**
@@ -49,6 +51,7 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(NetAddressDao.class);
         registerDaoClass(NEWSDao.class);
+        registerDaoClass(IpAddressDao.class);
     }
 
     public DaoSession newSession() {
