@@ -1,5 +1,6 @@
 package com.sc.testdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,7 +10,6 @@ import com.sc.utils.MyGridLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by suchun on 2017/8/9.
@@ -28,22 +28,27 @@ public class FunctionActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         grid.setGridAdapter(new MyGridLayout.GridAdatper() {
             @Override
-            public View getView(int index) {
+            public View getView(final int index) {
                 View view = getLayoutInflater().inflate(R.layout.action_item,
                         null);
                 TextView tv = (TextView) view.findViewById(R.id.tv);
                 tv.setText(titles[index]);
                 return view;
             }
-
             @Override
             public int getCount() {
                 return titles.length;
             }
         });
-    }
-
-    @OnClick(R.id.list)
-    public void onViewClicked() {
+        grid.setOnItemClickListener(new MyGridLayout.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int index) {
+                switch (index){
+                    case 0:
+                        Intent intent = new Intent(FunctionActivity.this, ScanActivity.class);
+                        startActivity(intent);
+                }
+            }
+        });
     }
 }
