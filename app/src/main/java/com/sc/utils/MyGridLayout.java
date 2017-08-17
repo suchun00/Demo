@@ -22,11 +22,12 @@ public class MyGridLayout extends ViewGroup {
     private int mMaxChildWidth ;
     private int mMaxChildHeight ;
     int count = 0;
-
+    Context con;
     GridAdatper adapter;
 
     public MyGridLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.con = context;
         if (attrs != null) {
             TypedArray a = getContext().obtainStyledAttributes(attrs,
                     R.styleable.MyGridLayout);
@@ -37,10 +38,12 @@ public class MyGridLayout extends ViewGroup {
 
     public MyGridLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        this.con = context;
     }
 
     public MyGridLayout(Context context) {
         this(context, null);
+        this.con = context;
     }
 
     @Override
@@ -48,18 +51,15 @@ public class MyGridLayout extends ViewGroup {
         // TODO Auto-generated method stub
         mMaxChildWidth = 0;
         mMaxChildHeight = 0;
-
         /*int modeW = 0, modeH = 0;
         if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED)
             modeW = MeasureSpec.UNSPECIFIED;
         if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.UNSPECIFIED)
             modeH = MeasureSpec.UNSPECIFIED;*/
-
         final int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
                 MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.UNSPECIFIED);
         final int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
                 MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.UNSPECIFIED);
-
         count = getChildCount();
         if (count == 0) {
             super.onMeasure(childWidthMeasureSpec, childHeightMeasureSpec);
@@ -70,9 +70,7 @@ public class MyGridLayout extends ViewGroup {
             if (child.getVisibility() == GONE) {
                 continue;
             }
-
             child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-
             mMaxChildWidth = Math.max(mMaxChildWidth, child.getMeasuredWidth());
             mMaxChildHeight = Math.max(mMaxChildHeight,
                     child.getMeasuredHeight());
@@ -108,9 +106,6 @@ public class MyGridLayout extends ViewGroup {
                             makeMeasureSpec(gridH, EXACTLY));
                 }
                 child.layout(left, top, left + gridW, top + gridH);
-                // System.out
-                // .println("--top--" + top + ",bottom=" + (top + gridH));
-
             }
             top += gridH + margin;
         }
@@ -131,11 +126,9 @@ public class MyGridLayout extends ViewGroup {
             addView(adapter.getView(i));
         }
     }
-
-    public interface OnItemClickListener {
+   /* public interface OnItemClickListener {
         void onItemClick(View v, int index);
     }
-
     public void setOnItemClickListener(final OnItemClickListener click) {
         if (this.adapter == null)
             return;
@@ -143,7 +136,6 @@ public class MyGridLayout extends ViewGroup {
             final int index = i;
             View view = getChildAt(i);
             view.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
@@ -151,5 +143,5 @@ public class MyGridLayout extends ViewGroup {
                 }
             });
         }
-    }
+    }*/
 }
