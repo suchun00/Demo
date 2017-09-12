@@ -3,18 +3,73 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:id="@+id/tv_content"/>
-    <TextView
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="设备号"
+            android:textSize="20sp"
+            android:id="@+id/tv" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/et_asset"
+            android:focusable="false"/>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:id="@+id/tv_number"/>
-    <TextView
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="消息内容"
+            android:textSize="20sp"
+            android:id="@+id/tv1" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/et_content"
+            android:focusable="false"
+            android:ems="10"/>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:id="@+id/tv_date"/>
-
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="发送人"
+            android:textSize="20sp"
+            android:id="@+id/tv2" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/et_number"
+            android:focusable="false" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="消息内容"
+            android:textSize="20sp"
+            android:id="@+id/tv3" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/et_date"
+            android:focusable="false" />
+    </LinearLayout>
 </LinearLayout>
