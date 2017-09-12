@@ -74,7 +74,7 @@ public class PushSmsService extends Service {
                System.out.println("发送请求");
                try {
                    //Thread.sleep(600000);
-                   Thread.sleep(10000);
+                   Thread.sleep(1000*60*10);
                    Message msg = m_handler.obtainMessage();
                    msg.what=SET;
                    m_handler.sendMessage(msg);
@@ -100,6 +100,7 @@ public class PushSmsService extends Service {
                     JSONObject result = new JSONObject(jsonData);
                     if(result!=null) {
                         obj = result.getJSONObject("Mess");
+                        String asset = obj.getString("asset");
                         String content = obj.getString("content");
                         String date = obj.getString("date");
                         String number = obj.getString("number");
@@ -115,7 +116,7 @@ public class PushSmsService extends Service {
                         String number = message.getNumber();
                         String date = message.getDate();
                         System.out.println("时间-----"+date);*/
-                            notification(content, number, date);
+                            notification(asset, content, number, date);
                             dbUtils.insertMessage(content, number, date);
                             System.out.println("11111111111111111");
                         }
@@ -126,13 +127,12 @@ public class PushSmsService extends Service {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(), "数据请求失败", Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(getApplicationContext(), "数据请求失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void notification(String content, String number, String date) {
+    private void notification(String asset, String content, String number, String date) {
         // 获取系统的通知管理器
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification.Builder builder1  = new Notification.Builder(getApplicationContext());
@@ -143,6 +143,7 @@ public class PushSmsService extends Service {
         builder1 .setDefaults(Notification.DEFAULT_ALL);
         builder1 .setAutoCancel(true);
         Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
+        intent.putExtra("asset", asset);
         intent.putExtra("content", content);
         intent.putExtra("number", number);
         intent.putExtra("date", date);

@@ -31,10 +31,12 @@ public class MainActivity extends AppCompatActivity {
     Button bt3;
     @BindView(R.id.netAddress)
     Button netAddress;
-    @BindView(R.id.et)
-    EditText et;
-    @BindView(R.id.et1)
-    EditText et1;
+    @BindView(R.id.asset)
+    EditText asset;
+    @BindView(R.id.content)
+    EditText content;
+    @BindView(R.id.number)
+    EditText number;
 
     private NotificationManager manager;
     private int messageNotificationID = 1000;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private PendingIntent pi;
     private AsyncHttpClient client;
     DBUtils dbUtils = new DBUtils();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 client = new AsyncHttpClient();
                 RequestParams params = new RequestParams();
-                params.put("content", et.getText().toString().trim());
-                params.put("number", et1.getText().toString().trim());
+                params.put("asset", asset.getText().toString().trim());
+                params.put("content", content.getText().toString().trim());
+                params.put("number", number.getText().toString().trim());
                 //String url = "http://172.23.0.182:8088/upload/abnormal/send.action";
                 String url = dbUtils.getNetAddress();
                 client.get(url, params, new AsyncHttpResponseHandler() {
@@ -82,12 +86,13 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("neirong----" + date);
                                 System.out.println("neirong----" + number);
                                 notification(content, number, date);*/
-                            Toast.makeText(getApplicationContext(),"推送成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "推送成功", Toast.LENGTH_SHORT).show();
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
+
                     public void onFailure(int statusCode, Header[] headers,
                                           byte[] responseBody, Throwable error) {
                         Toast.makeText(getApplicationContext(), "数据请求失败", Toast.LENGTH_SHORT)
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         bt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,PushSmsService.class);
+                Intent intent = new Intent(MainActivity.this, PushSmsService.class);
                 //intent.putExtra("number" , et1.getText().toString().trim());
                 startService(intent);
             }
@@ -113,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         bt3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopService(new Intent(MainActivity.this,PushSmsService.class));
+                stopService(new Intent(MainActivity.this, PushSmsService.class));
             }
         });
         /**
@@ -122,31 +127,31 @@ public class MainActivity extends AppCompatActivity {
         netAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,NetActivity.class);
+                Intent intent = new Intent(MainActivity.this, NetActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    public  void notification(String content, String number, String date) {
+    public void notification(String content, String number, String date) {
         // 获取系统的通知管理器
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification.Builder builder1  = new Notification.Builder(getApplicationContext());
-        builder1 .setSmallIcon(R.drawable.message);
-        builder1 .setWhen(System.currentTimeMillis());
-        builder1 .setContentTitle("通知");
-        builder1 .setContentText(content);
-        builder1 .setDefaults(Notification.DEFAULT_ALL);
-        builder1 .setAutoCancel(true);
+        Notification.Builder builder1 = new Notification.Builder(getApplicationContext());
+        builder1.setSmallIcon(R.drawable.message);
+        builder1.setWhen(System.currentTimeMillis());
+        builder1.setContentTitle("通知");
+        builder1.setContentText(content);
+        builder1.setDefaults(Notification.DEFAULT_ALL);
+        builder1.setAutoCancel(true);
         Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
         intent.putExtra("content", content);
         intent.putExtra("number", number);
         intent.putExtra("date", date);
         pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder1 .setContentIntent(pi);
+        builder1.setContentIntent(pi);
         notification1 = builder1.getNotification();
         manager.notify(messageNotificationID, notification1);
         messageNotificationID++;
     }
-    }
+}
 
