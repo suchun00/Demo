@@ -6,19 +6,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#FFCCFF"
+        android:background="@color/Pink"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="用户登录"
+            android:text="@string/title"
             android:gravity="center"
             android:textSize="20sp"
             android:textColor="@color/White"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="更改网址"
+            android:text="@string/net"
             android:textSize="20sp"
             android:textColor="@color/White"
             android:layout_marginLeft="200dp"
@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="50dp"
-                    android:text="工号"
+                    android:text="@string/username"
                     android:textSize="20sp"
                     android:gravity="center"/>
                 <EditText
@@ -62,13 +62,14 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="50dp"
-                    android:text="密码"
+                    android:text="@string/password"
                     android:textSize="20sp"
                     android:gravity="center"/>
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
+                    android:inputType="numberPassword"
                     android:id="@+id/password"/>
             </LinearLayout>
         </LinearLayout>
@@ -80,7 +81,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="登录"
+                android:id="@+id/upload"
+                android:text="@string/login"
                 android:textSize="20sp"
                 android:background="#FFCCFF"
                 android:textColor="@color/White"/>
@@ -88,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="130dp"
-                android:text="当前版本1.0"
+                android:text="@string/version"
                 android:textSize="20sp"
                 android:gravity="center"/>
         </LinearLayout>

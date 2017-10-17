@@ -7,19 +7,19 @@
     <TextView
         android:id="@+id/phynum1"
         android:padding="3dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
         android:padding="3dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-"/>
+        android:text="@string/space"/>
     <TextView
         android:id="@+id/rfidid1"
         android:padding="3dp"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

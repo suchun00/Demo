@@ -5,19 +5,70 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         android:gravity="center">
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="设备号"
+            android:text="@string/ordernumber"
             android:textSize="20sp"
             android:id="@+id/tv" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:id="@+id/et_order"
+            android:focusable="false"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/asset"
+            android:textSize="20sp"
+            android:id="@+id/tv1" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:id="@+id/et_asset"
+            android:focusable="false"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/shop"
+            android:textSize="20sp"
+            android:id="@+id/tv3" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/et_plant"
+            android:focusable="false"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/process"
+            android:textSize="20sp"
+            android:id="@+id/tv4" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/et_process"
             android:focusable="false"/>
     </LinearLayout>
     <LinearLayout
@@ -28,9 +79,9 @@
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="消息内容"
+            android:text="@string/messcontent"
             android:textSize="20sp"
-            android:id="@+id/tv1" />
+            android:id="@+id/tv5" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -40,36 +91,36 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         android:gravity="center">
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="发送人"
+            android:text="@string/sender"
             android:textSize="20sp"
-            android:id="@+id/tv2" />
+            android:id="@+id/tv6" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/et_number"
+            android:id="@+id/et_name"
             android:focusable="false" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         android:gravity="center">
         <TextView
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="消息内容"
+            android:text="@string/date"
             android:textSize="20sp"
-            android:id="@+id/tv3" />
+            android:id="@+id/tv7" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/et_date"
+            android:id="@+id/et_date1"
             android:focusable="false" />
     </LinearLayout>
 </LinearLayout>

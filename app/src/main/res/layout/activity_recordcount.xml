@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -17,72 +18,71 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
                 android:orientation="horizontal">
                 <Button
                     android:layout_width="150dp"
                     android:layout_height="50dp"
                     android:id="@+id/scan1"
-                    android:text="扫描批次标签"
+                    android:text="@string/order"
                     android:textSize="20sp"
                     android:background="@color/Pink"
-                    android:textColor="@color/White"/>
+                    android:textColor="@color/White"
+                    android:layout_gravity="center"/>
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:id="@+id/batch"
-                    android:focusable="false"/>
+                    android:id="@+id/order"
+                    android:focusable="false"
+                    android:layout_gravity="center"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp">
+                android:orientation="horizontal">
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="50dp"
-                    android:text="工序选择"
+                    android:text="@string/workshop"
                     android:textSize="20sp"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
                 <Spinner
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:id="@+id/spinner1"
-                    android:layout_weight="1"></Spinner>
+                    android:layout_weight="1"
+                    android:layout_gravity="center"></Spinner>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
                 android:paddingTop="10dp">
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="50dp"
-                    android:text="车间选择"
+                    android:text="@string/checkprocess"
                     android:textSize="20sp"
                     android:gravity="center"/>
                 <Spinner
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:id="@+id/spinner2"
-                    android:layout_weight="1"></Spinner>
+                    android:layout_weight="1"
+                    android:layout_gravity="center"></Spinner>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:paddingLeft="10dp">
+                android:layout_weight="1">
                 <Button
-                    android:layout_width="260dp"
+                    android:layout_width="150dp"
                     android:layout_height="50dp"
                     android:id="@+id/query"
-                    android:text="查询"
+                    android:text="@string/query"
                     android:textSize="20sp"
                     android:background="@color/Pink"
                     android:textColor="@color/White"
@@ -120,14 +120,14 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="50dp"
-                    android:text="设备号"
+                    android:text="合格数量"
                     android:textSize="20sp"
                     android:gravity="center"/>
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:id="@+id/asset"
+                    android:id="@+id/qualified"
                     android:focusable="false"/>
             </LinearLayout>
             <LinearLayout
@@ -138,14 +138,14 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="50dp"
-                    android:text="模具号"
+                    android:text="不合格数量"
                     android:textSize="20sp"
                     android:gravity="center"/>
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:id="@+id/mold"
+                    android:id="@+id/unqualified"
                     android:focusable="false"/>
             </LinearLayout>
             <LinearLayout
@@ -156,7 +156,7 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="50dp"
-                    android:text="数量"
+                    android:text="料废次品数"
                     android:textSize="20sp"
                     android:gravity="center"/>
                 <EditText
@@ -182,4 +182,5 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

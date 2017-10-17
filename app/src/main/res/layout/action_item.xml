@@ -10,8 +10,8 @@
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="录卡(5)"
+        android:text="@string/recordlabel"
         android:textColor="@color/White"
-        android:textSize="@dimen/actions_item_font" />
+        android:textSize="20sp" />
 
 </LinearLayout>

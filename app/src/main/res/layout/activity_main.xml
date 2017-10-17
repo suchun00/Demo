@@ -5,80 +5,165 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.sc.testdemo.MainActivity">
+
+        <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:layout_weight="1"
+             android:orientation="horizontal">
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/scan"
+                    android:text="@string/order"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:background="@color/Pink"
+                    android:textColor="@color/White"
+                    android:layout_gravity="center"/>
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:id="@+id/order"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:text="@string/workshop"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/spinner1"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"></Spinner>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:text="@string/process"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"/>
+                <Spinner
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/spinner2"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"></Spinner>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center">
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
                     android:id="@+id/tv1"
-                    android:text="设备号"
+                    android:text="@string/operator"
+                    android:gravity="center"
+                    android:textSize="20sp"/>
+                <EditText
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/username"
+                    android:textSize="20sp"
+                    android:inputType="text"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center">
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/tv2"
+                    android:text="@string/asset"
+                    android:gravity="center"
                     android:textSize="20sp"/>
                 <EditText
                     android:layout_width="250dp"
                     android:layout_height="50dp"
                     android:id="@+id/asset"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:orientation="horizontal"
             android:gravity="center">
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="推送内容"
-                    android:textSize="20sp"
-                    android:id="@+id/tv2" />
                 <EditText
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:hint="@string/hints"
                     android:id="@+id/content"
+                    android:gravity="center"
                     android:ems="10"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center">
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:text="发送人"
-                    android:textSize="20sp"
-                    android:id="@+id/tv3" />
-                <EditText
-                    android:layout_width="250dp"
+                    android:layout_width="150dp"
                     android:layout_height="50dp"
-                    android:id="@+id/number" />
+                    android:text="@string/sender"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:id="@+id/tv4" />
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:id="@+id/name" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/bt1"
-            android:text="消息推送" />
+            android:text="@string/sendmessage" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/bt2"
-            android:text="开启服务" />
+            android:text="@string/openservice" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/bt3"
-            android:text="关闭服务" />
+            android:text="@string/stopservice" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/netAddress"
-            android:text="更改网址" />
+            android:text="@string/net" />
         </LinearLayout>
 </LinearLayout>
