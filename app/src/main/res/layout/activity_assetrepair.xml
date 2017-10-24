@@ -112,12 +112,12 @@
         android:layout_weight="1">
     <Button
         android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:id="@+id/upload"
-        android:text="@string/upload"
-        android:textSize="20sp"
-        android:layout_gravity="center"
-        android:background="#FFCCFF"
-        android:textColor="@color/White"/>
+    android:layout_height="50dp"
+    android:id="@+id/upload"
+    android:text="@string/upload"
+    android:textSize="20sp"
+    android:layout_gravity="center"
+    android:background="#FFCCFF"
+    android:textColor="@color/White"/>
     </LinearLayout>
-</LinearLayout>
+    </LinearLayout>

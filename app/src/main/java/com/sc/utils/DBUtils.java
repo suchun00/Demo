@@ -5,10 +5,14 @@ import android.database.Cursor;
 import com.sc.entity.IpAddress;
 import com.sc.entity.NEWS;
 import com.sc.entity.NetAddress;
+import com.sc.entity.RecordCount;
+import com.sc.entity.RecordNum;
 import com.sc.entity.RfidLabels;
 import com.sc.greendao.greendao.gen.IpAddressDao;
 import com.sc.greendao.greendao.gen.NEWSDao;
 import com.sc.greendao.greendao.gen.NetAddressDao;
+import com.sc.greendao.greendao.gen.RecordCountDao;
+import com.sc.greendao.greendao.gen.RecordNumDao;
 import com.sc.greendao.greendao.gen.RfidLabelsDao;
 
 import java.util.ArrayList;
@@ -24,6 +28,8 @@ public class DBUtils {
     private NEWSDao newsDao;
     private IpAddressDao ipAddressDao;
     private RfidLabelsDao rfidLabelsDao;
+    private RecordCountDao recordCountDao;
+    private RecordNumDao recordNumDao;
 
     public  String getNetAddress(){
         netAddressDao = App.getInstance().getSession().getNetAddressDao();
@@ -63,10 +69,9 @@ public class DBUtils {
         ipAddressDao = App.getInstance().getSession().getIpAddressDao();
         String net = getNetAddress();
         if(net!=null){
-            ipAddressDao.deleteAll();
-            IpAddress ip = new IpAddress(null, ipName , ipAddress);
-            ipAddressDao.insert(ip);
-        }
+                IpAddress ip = new IpAddress(null, ipName , ipAddress);
+                ipAddressDao.insert(ip);
+            }
     }
     public String getIp(){
         ipAddressDao = App.getInstance().getSession().getIpAddressDao();
@@ -113,6 +118,18 @@ public class DBUtils {
         NEWS news = new NEWS(null,number, content, date);
         newsDao.insert(news);
     }
+    //插入员工生产数量(旧)
+    public void insertName(String staff, String qualified, String unqualified, String material){
+        recordCountDao = App.getInstance().getSession().getRecordCountDao();
+        RecordCount recordCount = new RecordCount(null, staff, qualified, unqualified, material);
+        recordCountDao.insert(recordCount);
+    }
+    //记录员工生产数量
+    public void insertName(String staff, String partloc){
+        recordNumDao = App.getInstance().getSession().getRecordNumDao();
+        RecordNum recordNum = new RecordNum(null, staff, partloc, null);
+        recordNumDao.insert(recordNum);
+    }
     //判断标签是否唯一
     public String idNull(String phynum){
         String result = null;
@@ -122,6 +139,7 @@ public class DBUtils {
             while (cursor.moveToNext()){
                 result = cursor.getString(0);
             }
+            cursor.close();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -146,6 +164,7 @@ public class DBUtils {
             while (cursor.moveToNext()){
                 phynumList.add(cursor.getString(0));
             }
+            cursor.close();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -160,6 +179,7 @@ public class DBUtils {
             while (cursor.moveToNext()){
                 rfididList.add(cursor.getString(0));
             }
+            cursor.close();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -174,6 +194,7 @@ public class DBUtils {
             while (cursor.moveToNext()){
                 typeList.add(cursor.getString(0));
             }
+            cursor.close();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -186,6 +207,18 @@ public class DBUtils {
             RfidLabels rfidLabels = rfidLabelsDao.queryBuilder().where(RfidLabelsDao.Properties.Phynum.eq(phynum)).build().unique();
             if(rfidLabels!=null){
                 rfidLabelsDao.deleteByKey(rfidLabels.getId());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    //删除员工生产表
+    public void deleteRecordNum(){
+        try {
+            recordNumDao = App.getInstance().getSession().getRecordNumDao();
+            List<RecordNum> recordNumList = recordNumDao.loadAll();
+            if(recordNumList!=null){
+                recordNumDao.deleteAll();
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -207,6 +240,23 @@ public class DBUtils {
             e.printStackTrace();
         }
     }
+    //更新员工产品数量
+    public void updateCount(String staff, String partloc, String result){
+        try {
+            recordNumDao = App.getInstance().getSession().getRecordNumDao();
+            RecordNum recordNum = recordNumDao.queryBuilder()
+                                        .where(RecordNumDao.Properties.Staff.eq(staff),
+                                        RecordNumDao.Properties.Partloc.eq(partloc)).build().unique();
+            if(recordNum!=null){
+                recordNum.setStaff(staff);
+                recordNum.setPartloc(partloc);
+                recordNum.setResult(result);
+                recordNumDao.update(recordNum);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     //获得当天录的标签
     public List<Map<String,String>> getRfidList(){
         List<Map<String,String>>list = new ArrayList<Map<String, String>>();
@@ -222,6 +272,27 @@ public class DBUtils {
                 map.put("DATE", cursor.getString(4));
                 list.add(map);
             }
+            cursor.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+    //获得员工生产数量
+    public List<Map<String,String>> getNumList(){
+        List<Map<String,String>>list = new ArrayList<Map<String, String>>();
+        Map<String, String> map = null;
+        try {
+            String sql = "select * from RECORD_NUM ";
+            Cursor cursor = App.getInstance().getSession().getDatabase().rawQuery(sql,null);
+            while (cursor.moveToNext()) {
+                map = new HashMap<>();
+                map.put("Staff", cursor.getString(1));
+                map.put("Partloc", cursor.getString(2));
+                map.put("Result", cursor.getString(3));
+                list.add(map);
+            }
+            cursor.close();
         }catch (Exception e){
             e.printStackTrace();
         }

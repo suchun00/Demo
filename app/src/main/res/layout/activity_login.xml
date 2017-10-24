@@ -18,6 +18,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:id="@+id/net"
             android:text="@string/net"
             android:textSize="20sp"
             android:textColor="@color/White"

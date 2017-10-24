@@ -5,9 +5,10 @@ package com.sc.utils;
  */
 public class Mess {
 
-        private String content;
-        private String number;
-        private String date;
+    private String content;
+    private String number;
+    private String date;
+    private String asset;
 
         public String getContent() {
             return content;
@@ -28,10 +29,16 @@ public class Mess {
         public String getDate() {
             return date;
         }
-
         public void setDate(String date) {
             this.date = date;
         }
 
+        public String getAsset() {
+            return asset;
+        }
+
+        public void setAsset(String asset) {
+            this.asset = asset;
+        }
     }
 

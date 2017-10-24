@@ -72,8 +72,7 @@ public class MyGridLayout extends ViewGroup {
             }
             child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
             mMaxChildWidth = Math.max(mMaxChildWidth, child.getMeasuredWidth());
-            mMaxChildHeight = Math.max(mMaxChildHeight,
-                    child.getMeasuredHeight());
+            mMaxChildHeight = Math.max(mMaxChildHeight, child.getMeasuredHeight());
         }
         setMeasuredDimension(resolveSize(mMaxChildWidth, widthMeasureSpec),
                 resolveSize(mMaxChildHeight, heightMeasureSpec));
@@ -89,7 +88,6 @@ public class MyGridLayout extends ViewGroup {
             return;
         int gridW = (width - margin * (colums - 1)) / colums;// 格子宽度
         int gridH = (height - margin * rows) / rows;// 格子高度
-
         int left = 0;
         int top = margin;
 
@@ -113,7 +111,6 @@ public class MyGridLayout extends ViewGroup {
 
     public interface GridAdatper {
         View getView(int index);
-
         int getCount();
     }
 
@@ -126,7 +123,7 @@ public class MyGridLayout extends ViewGroup {
             addView(adapter.getView(i));
         }
     }
-   /* public interface OnItemClickListener {
+   public interface OnItemClickListener {
         void onItemClick(View v, int index);
     }
     public void setOnItemClickListener(final OnItemClickListener click) {
@@ -143,5 +140,5 @@ public class MyGridLayout extends ViewGroup {
                 }
             });
         }
-    }*/
+    }
 }

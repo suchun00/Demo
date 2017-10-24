@@ -54,9 +54,9 @@
             android:layout_weight="1"
             android:orientation="horizontal">
                 <TextView
-                    android:layout_width="130dp"
+                    android:layout_width="150dp"
                     android:layout_height="50dp"
-                    android:text="@string/process"
+                    android:text="@string/checkprocess"
                     android:textSize="20sp"
                     android:gravity="center"
                     android:layout_gravity="center"/>
@@ -74,15 +74,16 @@
             android:orientation="horizontal"
             android:gravity="center">
                 <TextView
-                    android:layout_width="130dp"
+                    android:layout_width="150dp"
                     android:layout_height="50dp"
                     android:id="@+id/tv1"
                     android:text="@string/operator"
                     android:gravity="center"
                     android:textSize="20sp"/>
                 <EditText
-                    android:layout_width="250dp"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:id="@+id/username"
                     android:textSize="20sp"
                     android:inputType="text"/>
@@ -94,15 +95,16 @@
             android:orientation="horizontal"
             android:gravity="center">
                 <TextView
-                    android:layout_width="130dp"
+                    android:layout_width="150dp"
                     android:layout_height="50dp"
                     android:id="@+id/tv2"
                     android:text="@string/asset"
                     android:gravity="center"
                     android:textSize="20sp"/>
                 <EditText
-                    android:layout_width="250dp"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:id="@+id/asset"
                     android:textSize="20sp" />
         </LinearLayout>

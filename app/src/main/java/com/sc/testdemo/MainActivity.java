@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -35,8 +36,19 @@ public class MainActivity extends AppCompatActivity {
     EditText asset;
     @BindView(R.id.content)
     EditText content;
-    @BindView(R.id.number)
-    EditText number;
+    @BindView(R.id.scan)
+    Button scan;
+    @BindView(R.id.order)
+    EditText order;
+    @BindView(R.id.spinner1)
+    Spinner spinner1;
+    @BindView(R.id.spinner2)
+    Spinner spinner2;
+    @BindView(R.id.username)
+    EditText username;
+    @BindView(R.id.name)
+    EditText name;
+
 
     private NotificationManager manager;
     private int messageNotificationID = 1000;
@@ -67,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 RequestParams params = new RequestParams();
                 params.put("asset", asset.getText().toString().trim());
                 params.put("content", content.getText().toString().trim());
-                params.put("number", number.getText().toString().trim());
+                params.put("number", name.getText().toString().trim());//数据库需重新设计
                 //String url = "http://172.23.0.182:8088/upload/abnormal/send.action";
                 String url = dbUtils.getNetAddress();
                 client.get(url, params, new AsyncHttpResponseHandler() {

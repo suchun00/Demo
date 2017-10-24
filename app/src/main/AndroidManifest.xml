@@ -4,12 +4,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher2"
+        android:label="TestDemo"
         android:name="com.sc.utils.App"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".RecordCountActivity"
+                   android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,8 +19,13 @@
         </activity>
         <activity android:name=".ContentActivity"/>
         <activity android:name=".NetActivity"/>
+        <activity android:name=".ScanActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"></activity>
+        <activity android:name=".FunctionActivity"/>
         <service android:name=".PushSmsService"></service>
     </application>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>
