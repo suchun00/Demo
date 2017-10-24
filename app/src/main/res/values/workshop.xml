@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="shoplists">
+        <item>冲压车间</item>
+        <item>仪表车间</item>
+    </string-array>
+</resources>
