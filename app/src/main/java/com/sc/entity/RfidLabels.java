@@ -15,6 +15,7 @@ public class RfidLabels {
     private String rfidid;
     private String type;
     private String date;
+    private String flag;
     public String getDate() {
         return this.date;
     }
@@ -45,14 +46,21 @@ public class RfidLabels {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 110835707)
+    public String getFlag() {
+        return this.flag;
+    }
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+    @Generated(hash = 1692540163)
     public RfidLabels(Long id, String phynum, String rfidid, String type,
-            String date) {
+            String date, String flag) {
         this.id = id;
         this.phynum = phynum;
         this.rfidid = rfidid;
         this.type = type;
         this.date = date;
+        this.flag = flag;
     }
     @Generated(hash = 942618534)
     public RfidLabels() {
