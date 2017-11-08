@@ -30,6 +30,9 @@ import com.sc.utils.DBUtils;
 import com.sc.utils.GsonUtil;
 import com.sc.utils.Rfidlabel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,30 +65,30 @@ public class ScanActivity extends AppCompatActivity {
     @BindView(R.id.partlist)
     ListView partlist;
     private List<Map<String,String>> list = new ArrayList<Map<String,String>>();
-    private List<String>rfididList;
-    private List<String>phynumList;
-    private List<String> typelist;
-    private ArrayAdapter<CharSequence> adapterLabel = null;
     private Handler mHandler = new MainHandler();
     SimpleAdapter simpleAdapter;
     String m_strresult = "";
     String liststream="";
+    String jsonString="";
     String type;
     String date;
+    String msg;
+    String flag = "0";
     DateFormat df = null;
-    DBUtils dbUtils = new DBUtils();
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
         ButterKnife.bind(this);
-        Init();
-        this.adapterLabel = ArrayAdapter.createFromResource(this,
+        df = DateFormat.getDateInstance();
+        date = df.format(new Date());
+        ArrayAdapter<CharSequence> adapterLabel = ArrayAdapter.createFromResource(this,
                 R.array.labellist,
                 android.R.layout.simple_spinner_item);
-        this.adapterLabel.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item);
-        this.spinner.setAdapter(this.adapterLabel);
+        adapterLabel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinner.setAdapter(adapterLabel);
         reader.m_handler = mHandler;
         this.getList();
     }
@@ -112,42 +115,53 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     private void upLoad() {
-        //List<Map<String, String>>list = new ArrayList<Map<String, String>>();
-        List<RfidLabels> list1 = null;
-        List<Rfidlabel> rfidlabel = null;
-        list1 = dbUtils.getRfidlist();
-        String type1 = list1.get(0).getType();
+        JSONObject jsonObject = new JSONObject();
+        final List<Map<String, String>>list1;
+       //List<RfidLabels> list1;
+
+        List<Rfidlabel> rfidlabel;
+        list1 = DBUtils.getRfidList(date);
+        String type1 = list1.get(0).get("type");
         System.out.println("标签信息------" + type1);
-        //JSONArray jsonArray = JSONArray.fromObject(list);
         Logger.i(type1);
-        Logger.d("被打印了");
         if (list1.size() == 0) {
             Toast.makeText(ScanActivity.this, "请先扫描录入数据", Toast.LENGTH_SHORT).show();
         } else {
             try {
                 Gson gson = new Gson();
-                String jsonString = gson.toJson(list1);
-                rfidlabel = GsonUtil.parseJsonArrayWithGson(jsonString, Rfidlabel.class);
-
+                jsonString = gson.toJson(list1);
+                /*rfidlabel = GsonUtil.parseJsonArrayWithGson(jsonString, Rfidlabel.class);
                 System.out.println(rfidlabel);
-                liststream = rfidlabel.toString();
+                liststream = rfidlabel.toString();*/
+                //liststream = jsonObject.put("label",  rfidlabel.toString()).toString();
                 Logger.json(jsonString);
+                Logger.i(jsonString);
             }catch (Exception e){
                 e.printStackTrace();
             }
-            /*RequestParams params = new RequestParams();
-            params.put("rfid",liststream);*/
             AsyncHttpClient client = new AsyncHttpClient();
-            String url = dbUtils.getIp()+"";
+            String url = DBUtils.getIp()+"MES/function/scanLabel.action";
+            Logger.i(url);
             StringEntity stringEntity;
             try {
-                stringEntity = new StringEntity(liststream,"utf-8");
+                stringEntity = new StringEntity(jsonString,"utf-8");
                 client.post(ScanActivity.this, url, stringEntity, "application/json;charset=utf-8", new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        if(statusCode == 200)
-                            Toast.makeText(ScanActivity.this,"上传成功", Toast.LENGTH_SHORT).show();
-                        clearList();
+                        if(responseBody!=null){
+                            String result = new String(responseBody);
+                            try {
+                                JSONObject obj = new JSONObject(result);
+                                msg = (String) obj.get("msg");
+                                if(msg.equals("录入成功")){
+                                    Toast.makeText(ScanActivity.this,"上传成功", Toast.LENGTH_SHORT).show();
+                                    DBUtils.updateFlag(list1);
+                                    clearList();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
@@ -161,6 +175,8 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     private void clearList() {
+        ScanActivity.this.phynum.setText("");
+        ScanActivity.this.rfidid.setText("");
         list.clear();
         this.simpleAdapter = new SimpleAdapter(this, this.list, R.layout.partdata_list,
                 new String[]{"phynum","rfidid"}, new int[]{R.id.phynum1 , R.id.rfidid1});
@@ -168,61 +184,56 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     private void record() {
-        df = DateFormat.getDateInstance();
-        date = df.format(new Date());
+        /*df = DateFormat.getDateInstance();
+        date = df.format(new Date());*/
         if (("".equals(phynum.getText().toString().trim())) || ("".equals(rfidid.getText().toString().trim()))) {
             Toast.makeText(ScanActivity.this, "请先扫描标签或输入编号", Toast.LENGTH_SHORT).show();
         } else {
             type = spinner.getSelectedItem().toString();
-            if ("批次标签".equals(type)) {
-                type = "批次标签";
-            } else if ("设备标签".equals(type)) {
-                type = "设备标签";
-            } else if ("模具标签".equals(type)) {
-                type = "模具标签";
+            if ("订单标签".equals(type)) {
+                type = "订单标签";
             } else if ("人员标签".equals(type)) {
                 type = "人员标签";
             }
+            if(DBUtils.idNull(phynum.getText().toString().trim()) == null){
+                DBUtils.insertRfid(phynum.getText().toString().trim(), rfidid.getText().toString().trim(), type, date, flag);
+                getList();
+                Toast.makeText(ScanActivity.this, "录入标签信息成功", Toast.LENGTH_SHORT).show();
+            }else {
+                Dialog dialog = new AlertDialog.Builder(ScanActivity.this)
+                        .setTitle("确认替换？")
+                        .setMessage("该部位已录入标签，确定替换吗？")
+                        .setPositiveButton("替换", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DBUtils.updateRfid(phynum.getText().toString().trim(), rfidid.getText().toString().trim(), type, date);
+                                getList();
+                                Toast.makeText(ScanActivity.this,"标签替换成功!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                             @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-        if(dbUtils.idNull(phynum.getText().toString().trim()) == null){
-            dbUtils.insertRfid(phynum.getText().toString().trim(), rfidid.getText().toString().trim(), type, date);
-            getList();
-            Toast.makeText(ScanActivity.this, "录入标签信息成功", Toast.LENGTH_SHORT).show();
-        }else {
-            Dialog dialog = new AlertDialog.Builder(ScanActivity.this)
-                    .setTitle("确认替换？")
-                    .setMessage("该部位已录入标签，确定替换吗？")
-                    .setPositiveButton("替换", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dbUtils.updateRfid(phynum.getText().toString().trim(), rfidid.getText().toString().trim(), type, date);
-                            getList();
-                            Toast.makeText(ScanActivity.this,"标签替换成功!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                         }
-                    }).create();
-            dialog.show();
+                             }
+                        }).create();
+                dialog.show();
             }
         }
     }
     public void getList(){
         list.clear();
-        rfididList = dbUtils.getRfididList();
-        phynumList = dbUtils.getPhynumList();
-        typelist = dbUtils.getTypeList();
-        for(int i=0; i<phynumList.size(); i++){
+        List<String> rfididList = DBUtils.getRfididList(date);
+        List<String> phynumList = DBUtils.getPhynumList(date);
+        List<String> typelist = DBUtils.getTypeList(date);
+        for(int i = 0; i< phynumList.size(); i++){
             if(!(phynumList.get(i) == null || phynumList.get(i).length() == 0)){
                 String Drfidid = rfididList.get(i);
                 String Dphynum = phynumList.get(i);
                 String Dtype = typelist.get(i);
                 Map<String, String> map = new HashMap<>();
                 map.put("phynum", Dphynum);
-                map.put("rfidid", Drfidid+ "-" + Dtype);
+                map.put("rfidid", Drfidid + "-" + Dtype);
                 list.add(map);
             }
         }
@@ -240,7 +251,7 @@ public class ScanActivity extends AppCompatActivity {
                         .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dbUtils.deleteRfid(Phynum);
+                                DBUtils.deleteRfid(Phynum);
                                 Toast.makeText(ScanActivity.this,"删除标签信息成功", Toast.LENGTH_SHORT).show();
                                 getList();
                             }
@@ -257,7 +268,7 @@ public class ScanActivity extends AppCompatActivity {
         });
     }
 
-    void Init() {
+    /*void Init() {
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 reader.init("/dev/ttyMT1");
@@ -271,17 +282,15 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
         thread.start();
-    }
+    }*/
 
     public class MainHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what != 0) {
                 if (m_strresult.indexOf((String) msg.obj) < 0) {
-                    //Log.e("8888888888",(String)msg.obj+"\r\n");
                     m_strresult = "";
                     m_strresult += (String) msg.obj;
-                    //m_strresult+="\r\n";
                     Log.e("222", m_strresult);
                     ScanActivity.this.phynum.setText(m_strresult);
                     Toast.makeText(ScanActivity.this, "RFID标签信息获取成功", Toast.LENGTH_SHORT).show();

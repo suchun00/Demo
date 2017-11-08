@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -48,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
     EditText username;
     @BindView(R.id.name)
     EditText name;
-
-
     private NotificationManager manager;
     private int messageNotificationID = 1000;
     private Notification notification1;
     private PendingIntent pi;
     private AsyncHttpClient client;
+    String workshop;
+    String process;
     DBUtils dbUtils = new DBUtils();
 
     @Override
@@ -62,13 +64,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        /*et = (EditText) findViewById(R.id.et);
-        et1 = (EditText) findViewById(R.id.et1);
-        bt1 = (Button)findViewById(R.id.bt1);
-        bt2 = (Button)findViewById(R.id.bt2);
-        bt3 = (Button) findViewById(R.id.bt3);
-        netAddress = (Button) findViewById(R.id.netAddress);*/
-        dbUtils.initNet();
+        init();
         /**
          * 消息推送
          */
@@ -99,16 +95,13 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("neirong----" + number);
                                 notification(content, number, date);*/
                             Toast.makeText(getApplicationContext(), "推送成功", Toast.LENGTH_SHORT).show();
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
 
-                    public void onFailure(int statusCode, Header[] headers,
-                                          byte[] responseBody, Throwable error) {
-                        Toast.makeText(getApplicationContext(), "数据请求失败", Toast.LENGTH_SHORT)
-                                .show();
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Toast.makeText(getApplicationContext(), "数据请求失败", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -145,6 +138,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void init() {
+        ArrayAdapter<CharSequence> workadapter = ArrayAdapter.createFromResource(this,
+                R.array.workshop, android.R.layout.simple_spinner_item);
+        workadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.spinner1.setAdapter(workadapter);
+        spinner1.setOnItemSelectedListener(new spinnerItemSelected());
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                process = spinner2.getSelectedItem().toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     public void notification(String content, String number, String date) {
         // 获取系统的通知管理器
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -165,5 +176,32 @@ public class MainActivity extends AppCompatActivity {
         manager.notify(messageNotificationID, notification1);
         messageNotificationID++;
     }
+    class spinnerItemSelected implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            Spinner spinner = ((Spinner) parent);
+            String ws = ((String) spinner.getItemAtPosition(position));
+            workshop = spinner1.getSelectedItem().toString();
+            ArrayAdapter<CharSequence> processadapter = ArrayAdapter.createFromResource(MainActivity.this,
+                    R.array.def, android.R.layout.simple_spinner_item);
+            processadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //处理车间工序联动显示
+            if(ws.equals("冲压车间")) {
+                 processadapter = ArrayAdapter.createFromResource(MainActivity.this,
+                        R.array.冲压车间, android.R.layout.simple_spinner_item);
+                processadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            }else if(ws.equals("仪表车间")){
+                 processadapter = ArrayAdapter.createFromResource(MainActivity.this,
+                        R.array.仪表车间, android.R.layout.simple_spinner_item);
+                processadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            }
+            spinner2.setAdapter(processadapter);
+        }
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
+
 }
+
 

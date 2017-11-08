@@ -14,16 +14,16 @@ import com.sc.utils.DBUtils;
  * Created by suchun on 2017/7/24.
  */
 public class NetActivity extends AppCompatActivity {
-    private NetAddressDao netAddressDao;
+    //private NetAddressDao netAddressDao;
     private EditText net;
     private Button bt1;
     private Button bt2;
     String address = null;
-    DBUtils dbUtils = new DBUtils();
+    //DBUtils dbUtils = new DBUtils();
 
     protected void onResume(){
         super.onResume();
-        address = dbUtils.getNetAddress();
+        address = DBUtils.getNetAddress();
         if(address!=null){
             net.setText(address);
         }
@@ -40,9 +40,9 @@ public class NetActivity extends AppCompatActivity {
             public void onClick(View v) {
                 address = net.getText().toString().trim();
                 try {
-                    dbUtils.update(address);
-                    String[]ip = address.split("N");
-                    dbUtils.addIp("ningguo",ip[0]);
+                    DBUtils.update(address);
+                    String[]ip = address.split("M");
+                    DBUtils.addIp("ningguo",ip[0]);
                     Toast.makeText(getApplicationContext(),"更改网址成功",Toast.LENGTH_SHORT).show();
                     NetActivity.this.finish();
                 }catch (Exception e){
@@ -54,7 +54,7 @@ public class NetActivity extends AppCompatActivity {
         bt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbUtils.restoreNet();
+                DBUtils.restoreNet();
                 Toast.makeText(getApplicationContext(),"恢复网址成功",Toast.LENGTH_SHORT).show();
                 NetActivity.this.finish();
             }
