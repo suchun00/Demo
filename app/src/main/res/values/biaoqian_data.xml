@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="labellist">
+        <item>订单标签</item>
         <item>批次标签</item>
+        <item>人员标签</item>
+    </string-array>
+    <string-array name="labellist1">
         <item>设备标签</item>
         <item>模具标签</item>
-        <item>人员标签</item>
     </string-array>
 </resources>

@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="shoplists">
+    <string-array name="workshop">
+        <item>--请选择车间--</item>
         <item>冲压车间</item>
         <item>仪表车间</item>
+    </string-array>
+    <string-array name="def">
+        <item>--请选择工序--</item>
+    </string-array>
+    <string-array name="冲压车间">
+        <item>工序一</item>
+        <item>工序二</item>
+    </string-array>
+    <string-array name="仪表车间">
+        <item>工序一</item>
+        <item>工序二</item>
+        <item>工序三</item>
     </string-array>
 </resources>

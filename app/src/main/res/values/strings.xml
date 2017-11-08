@@ -35,7 +35,7 @@
     <string name="datehint">请选择日期</string>
     <string name="upload">提交</string>
     <string name="space">-</string>
-    <string name="labeltype">标签初始化</string>
+    <string name="labeltype">标签类型</string>
     <string name="rfid">RFID</string>
     <string name="rfidid">编号</string>
     <string name="scan">扫描标签</string>
@@ -56,5 +56,6 @@
     <string name="assetstatus">设备状态</string>
     <string name="repaired">已修</string>
     <string name="recordlabel">录卡(5)</string>
+    <string name="assetlist">设备维修列表</string>
 
 </resources>
