@@ -24,7 +24,6 @@ public class DaoMaster extends AbstractDaoMaster {
         IpAddressDao.createTable(db, ifNotExists);
         NetAddressDao.createTable(db, ifNotExists);
         NEWSDao.createTable(db, ifNotExists);
-        RecordCountDao.createTable(db, ifNotExists);
         RecordNumDao.createTable(db, ifNotExists);
         RfidLabelsDao.createTable(db, ifNotExists);
     }
@@ -34,7 +33,6 @@ public class DaoMaster extends AbstractDaoMaster {
         IpAddressDao.dropTable(db, ifExists);
         NetAddressDao.dropTable(db, ifExists);
         NEWSDao.dropTable(db, ifExists);
-        RecordCountDao.dropTable(db, ifExists);
         RecordNumDao.dropTable(db, ifExists);
         RfidLabelsDao.dropTable(db, ifExists);
     }
@@ -58,7 +56,6 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(IpAddressDao.class);
         registerDaoClass(NetAddressDao.class);
         registerDaoClass(NEWSDao.class);
-        registerDaoClass(RecordCountDao.class);
         registerDaoClass(RecordNumDao.class);
         registerDaoClass(RfidLabelsDao.class);
     }

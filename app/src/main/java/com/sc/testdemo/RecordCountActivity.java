@@ -80,6 +80,7 @@ public class RecordCountActivity extends AppCompatActivity {
         message.add(0, "合格品数量");
         message.add(1, "不合格品数量");
         message.add(2, "料废次品数");
+        message.add(3, "不合格原因");
         name.add(0, "zhangsan");
         name.add(1, "lisi");
         infolist = this.initData();
@@ -120,8 +121,13 @@ public class RecordCountActivity extends AppCompatActivity {
             //dbUtils.insertName(name.get(i), null, null);
             for (int j = 0; j < message.size(); j++) {
                 map = new HashMap<>();
-                map.put("text", message.get(j));
-                map.put("type", 2);
+                if(j == message.size()-1){
+                    map.put("text", message.get(j));
+                    map.put("type", 3);
+                }else {
+                    map.put("text", message.get(j));
+                    map.put("type", 2);
+                }
                 list.add(map);
                 dbUtils.insertName(name.get(i),  message.get(j));
             }

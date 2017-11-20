@@ -7,7 +7,7 @@ public class Rfidlabel {
     private String phynum;
     private String rfidid;
     private String type;
-    private String date;
+    //private String date;
 
     public String getPhynum() {
         return phynum;
@@ -33,11 +33,11 @@ public class Rfidlabel {
         this.type = type;
     }
 
-    public String getDate() {
+    /*public String getDate() {
         return date;
     }
 
     public void setDate(String date) {
         this.date = date;
-    }
+    }*/
 }

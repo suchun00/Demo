@@ -17,9 +17,14 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.sc.utils.DBUtils;
+import com.sc.utils.GsonUtil;
 import com.sc.utils.Mess;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -33,12 +38,9 @@ public class PushSmsService extends Service {
     NotificationManager manager;
     Notification notification1;
     PendingIntent pi;
-    private  Mess message;
     private AsyncHttpClient client;
     private boolean flag = true;
     public static final int SET = 1;
-    DBUtils dbUtils = new DBUtils();
-
 
     @Nullable
     @Override
@@ -74,7 +76,7 @@ public class PushSmsService extends Service {
                System.out.println("发送请求");
                try {
                    //Thread.sleep(600000);
-                   Thread.sleep(1000*60*10);
+                   Thread.sleep(1000*10);
                    Message msg = m_handler.obtainMessage();
                    msg.what=SET;
                    m_handler.sendMessage(msg);
@@ -87,40 +89,52 @@ public class PushSmsService extends Service {
 
     public void funHttp() {
         //String url = "http://172.23.0.182:8088/upload/abnormal/send.action";
-        String url = dbUtils.getNetAddress();
+        String url = DBUtils.getIp()+"MES/mess/getMess.action";
         RequestParams params = new RequestParams();
-        params.put("number" , "123456");
-        client.get(url, params,new AsyncHttpResponseHandler(Looper.getMainLooper()) {
+        params.put("position" , 1);
+        client.get(url, params, new AsyncHttpResponseHandler(Looper.getMainLooper()) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
-                    JSONObject obj =null;
+                    JSONArray jsonArray;
                     String jsonData = new String(responseBody, "utf-8");
                     System.out.println("数据----"+jsonData);
                     JSONObject result = new JSONObject(jsonData);
-                    if(result!=null) {
-                        obj = result.getJSONObject("Mess");
-                        String asset = obj.getString("asset");
-                        String content = obj.getString("content");
-                        String date = obj.getString("date");
-                        String number = obj.getString("number");
+                    jsonArray = result.getJSONArray("message");
+                    System.out.println("数据++++++"+jsonArray);
+                    /*JSONObject obj = jsonArray.getJSONObject(0);
+                    String patch = obj.getString("plan_no");
 
+                    System.out.println("数据++++++"+patch);
+                    String asset = obj.getString("asset_no");
+                    String plant = obj.getString("shop_name");
+                    String process = obj.getString("process_name");
+                    String username = obj.getString("operator");
+                    String content = obj.getString("content");
+                    String sender = obj.getString("sender");
+                    String date = obj.getString("date");*/
+                    //Mess mess = GsonUtil.parseJsonWithGson(jsonArray.toString(), Mess.class);
+                    List<Map<String, Object>> mess = GsonUtil.listKeyMaps(jsonArray.toString());
+                    String patch = ((String) mess.get(0).get("plan_no"));
+                    System.out.println("数据++++++"+patch);
+                    String asset = ((String) mess.get(0).get("asset_no"));
+                    String plant = ((String) mess.get(0).get("shop_name"));
+                    String process = ((String) mess.get(0).get("process_name"));
+                    String username = ((String) mess.get(0).get("operator"));
+                    String content = ((String) mess.get(0).get("content"));
+                    String sender = ((String) mess.get(0).get("sender"));
+                    String date = ((String) mess.get(0).get("date"));
                         /*if((!content.equals(dbUtils.getLastMessageContent()))||
                                 (!number.equals(dbUtils.getLastMessageNumber()))){*/
-                        if((!content.equals(dbUtils.getLastMessages().get("content")))
-                                ||(!number.equals(dbUtils.getLastMessages().get("number")))
-                                ||(dbUtils.getLastMessages()==null)){
-
-                        /*message = GsonUtil.parseJsonWithGson(jsonData,Mess.class);
-                        String content = message.getContent();
-                        String number = message.getNumber();
-                        String date = message.getDate();
-                        System.out.println("时间-----"+date);*/
-                            notification(asset, content, number, date);
-                            dbUtils.insertMessage(content, number, date);
+                    if((!asset.equals(DBUtils.getLastMessages().get("asset")))
+                            || (!content.equals(DBUtils.getLastMessages().get("content")))
+                            ||(!sender.equals(DBUtils.getLastMessages().get("sender")))
+                            ||(DBUtils.getLastMessages()==null)){
+                            notification(patch, asset, plant, process, username, content, sender, date);
+                            DBUtils.insertMessage(patch, asset, plant, process, username, content, sender, date);
                             System.out.println("11111111111111111");
-                        }
                     }
+
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
@@ -132,7 +146,7 @@ public class PushSmsService extends Service {
         });
     }
 
-    private void notification(String asset, String content, String number, String date) {
+    private void notification(String patch, String asset, String plant, String process, String username, String content, String sender, String date) {
         // 获取系统的通知管理器
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         Notification.Builder builder1  = new Notification.Builder(getApplicationContext());
@@ -143,9 +157,13 @@ public class PushSmsService extends Service {
         builder1 .setDefaults(Notification.DEFAULT_ALL);
         builder1 .setAutoCancel(true);
         Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
+        intent.putExtra("patch", patch);
         intent.putExtra("asset", asset);
+        intent.putExtra("plant", plant);
+        intent.putExtra("process", process);
+        intent.putExtra("username", username);
         intent.putExtra("content", content);
-        intent.putExtra("number", number);
+        intent.putExtra("sender", sender);
         intent.putExtra("date", date);
         pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder1 .setContentIntent(pi);

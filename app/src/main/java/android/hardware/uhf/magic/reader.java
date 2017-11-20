@@ -1,16 +1,18 @@
 package android.hardware.uhf.magic;
 
+/**
+ * Created by Administrator on 2017/10/26.
+ */
+
+import java.util.regex.Pattern;
+
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-/**
- * Created by suchun on 2017/8/9.
- */
+//import android.util.Log; //mifarereader
 public class reader {
     static public Handler m_handler = null;
     static Boolean m_bASYC = false, m_bLoop = false, m_bOK = false;
@@ -184,12 +186,13 @@ public class reader {
     /**
      * 灭活标签 （结果通过Handle异步发送）
      *
-     * @param btReadId
+     *
      *            读写器地址
-     * @param pbtAryPassWord
+     *
      *            销毁密码（4个字节）
      * @return
      */
+
     static public int KillLables(byte[] password, int nUL, byte[] EPC) {
         Clean();
         int nret = Kill(password, nUL, EPC);
@@ -809,8 +812,7 @@ public class reader {
 
     static {
         System.loadLibrary("uhf-tools");
-        msound = mSoundPool.load("/system/media/audio/notifications/Argon.ogg",
-                1);
+        msound = mSoundPool.load("/system/media/audio/notifications/Argon.ogg", 1);
     }
 
     public static byte[] stringToBytes(String hexString) {
@@ -889,4 +891,6 @@ public class reader {
         }
         return result;
     }
+
 }
+

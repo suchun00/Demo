@@ -6,11 +6,17 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 import com.sc.testdemo.R;
 import com.sc.utils.DBUtils;
+import com.sc.utils.Num;
 import com.sc.utils.ViewHolder;
 
 import java.util.HashMap;
@@ -58,23 +64,42 @@ public class ContentAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-         final ViewHolder viewHolder ;
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_name, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
+        final ViewHolder viewHolder = new ViewHolder() ;
+        type = getItemViewType(position);
+        /*if (convertView == null) {
+            //根据数据类型不同生成不同的convertView
+            if(type == 1 || type ==2){
+                convertView = inflater.inflate(R.layout.item_name, parent, false);
+
+               // viewHolder = new ViewHolder(convertView);
+                convertView.setTag(viewHolder);
+            }else{
+                convertView = inflater.inflate(R.layout.item_type, parent, false);
+                viewHolder.tv = ((TextView) convertView.findViewById(R.id.tv));
+                viewHolder.spinner = ((Spinner) convertView.findViewById(R.id.spinner));
+                //viewHolder = new ViewHolder(convertView);
+                convertView.setTag(viewHolder);
+            }
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
-        }
+        }*/
         final Map<String, Object> map = list.get(position);
-        type = getItemViewType(position);
+
         switch (type){
-            case 1:
+            case Num.first:
+                convertView = inflater.inflate(R.layout.item_name, parent, false);
+                viewHolder.tv = ((TextView) convertView.findViewById(R.id.tv));
+                viewHolder.et = ((EditText) convertView.findViewById(R.id.et));
+
                 viewHolder.tv.setText("操作工");
                 viewHolder.et.setText(map.get("text").toString());
                // data.add(position, map.get("text").toString());
                 break;
-            case 2:
+            case Num.second:
+                convertView = inflater.inflate(R.layout.item_name, parent, false);
+                viewHolder.tv = ((TextView) convertView.findViewById(R.id.tv));
+                viewHolder.et = ((EditText) convertView.findViewById(R.id.et));
+
                 viewHolder.tv.setText(map.get("text").toString());
                 viewHolder.et.setTag(position);
 
@@ -120,6 +145,35 @@ public class ContentAdapter extends BaseAdapter{
                     e.printStackTrace();
                 }
                 break;
+            case Num.third:
+                convertView = inflater.inflate(R.layout.item_type, parent, false);
+                viewHolder.tv = ((TextView) convertView.findViewById(R.id.tv));
+                viewHolder.spinner = ((Spinner) convertView.findViewById(R.id.spinner));
+                viewHolder.tv.setText(map.get("text").toString());
+                final String staff = funResult(position);
+                Logger.i(staff);
+                final String partloc = ((String) map.get("text"));
+                Logger.i(partloc);
+                ArrayAdapter<CharSequence> adapterDefective = ArrayAdapter.createFromResource(con,
+                        R.array.defective,
+                        android.R.layout.simple_spinner_item);
+                adapterDefective.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                viewHolder.spinner.setAdapter(adapterDefective);
+                viewHolder.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String result = viewHolder.spinner.getSelectedItem().toString();
+                        Logger.i(result);
+                        dbUtils.updateCount(staff, partloc, result);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+
         }
         return convertView;
     }

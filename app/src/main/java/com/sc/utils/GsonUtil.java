@@ -3,7 +3,9 @@ package com.sc.utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by suchun on 2017/7/21.
@@ -23,5 +25,16 @@ public class GsonUtil {
         List<T> result = gson.fromJson(jsonData, new TypeToken<List<T>>() {
         }.getType());
         return result;
+    }
+    public static List<Map<String, Object>> listKeyMaps(String jsonString) {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        try {
+            Gson gson = new Gson();
+            list = gson.fromJson(jsonString,
+                    new TypeToken<List<Map<String, Object>>>() {
+                    }.getType());
+        } catch (Exception e) {
+        }
+        return list;
     }
 }

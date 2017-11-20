@@ -54,6 +54,7 @@
     <string name="stopservice">关闭服务</string>
     <string name="function">主要功能</string>
     <string name="assetstatus">设备状态</string>
+    <string name="unusual">异常</string>
     <string name="repaired">已修</string>
     <string name="recordlabel">录卡(5)</string>
     <string name="assetlist">设备维修列表</string>

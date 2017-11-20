@@ -29,6 +29,7 @@ public class RfidLabelsDao extends AbstractDao<RfidLabels, Long> {
         public final static Property Rfidid = new Property(2, String.class, "rfidid", false, "RFIDID");
         public final static Property Type = new Property(3, String.class, "type", false, "TYPE");
         public final static Property Date = new Property(4, String.class, "date", false, "DATE");
+        public final static Property Flag = new Property(5, String.class, "flag", false, "FLAG");
     };
 
 
@@ -48,7 +49,8 @@ public class RfidLabelsDao extends AbstractDao<RfidLabels, Long> {
                 "\"PHYNUM\" TEXT," + // 1: phynum
                 "\"RFIDID\" TEXT," + // 2: rfidid
                 "\"TYPE\" TEXT," + // 3: type
-                "\"DATE\" TEXT);"); // 4: date
+                "\"DATE\" TEXT," + // 4: date
+                "\"FLAG\" TEXT);"); // 5: flag
     }
 
     /** Drops the underlying database table. */
@@ -85,6 +87,11 @@ public class RfidLabelsDao extends AbstractDao<RfidLabels, Long> {
         if (date != null) {
             stmt.bindString(5, date);
         }
+ 
+        String flag = entity.getFlag();
+        if (flag != null) {
+            stmt.bindString(6, flag);
+        }
     }
 
     @Override
@@ -115,6 +122,11 @@ public class RfidLabelsDao extends AbstractDao<RfidLabels, Long> {
         if (date != null) {
             stmt.bindString(5, date);
         }
+ 
+        String flag = entity.getFlag();
+        if (flag != null) {
+            stmt.bindString(6, flag);
+        }
     }
 
     @Override
@@ -129,7 +141,8 @@ public class RfidLabelsDao extends AbstractDao<RfidLabels, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // phynum
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // rfidid
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // type
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // date
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // date
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // flag
         );
         return entity;
     }
@@ -141,6 +154,7 @@ public class RfidLabelsDao extends AbstractDao<RfidLabels, Long> {
         entity.setRfidid(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setDate(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setFlag(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     @Override

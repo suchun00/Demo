@@ -9,20 +9,38 @@
         android:name="com.sc.utils.App"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RecordCountActivity"
-                   android:windowSoftInputMode="adjustPan">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".FunctionActivity"/>
+        <activity android:name=".ScanActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
+        <activity android:name=".MaterialActivity"/>
+        <activity android:name=".RecordCountActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".HandoverActivity"/>
+        <activity android:name=".PollActivity"/>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".RepairFunctionActivity"/>
+        <activity android:name=".AssetListActivity"/>
+        <activity android:name=".AssetRepairActivity"/>
+        <activity android:name=".AssetMoldActivity"/>
+        <activity android:name=".ScanAmActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity android:name=".ContentActivity"/>
         <activity android:name=".NetActivity"/>
-        <activity android:name=".ScanActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"></activity>
-        <activity android:name=".FunctionActivity"/>
+        <activity android:name=".OutSourceActivity"/>
+        <activity android:name=".InspectActivity"/>
         <service android:name=".PushSmsService"></service>
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>

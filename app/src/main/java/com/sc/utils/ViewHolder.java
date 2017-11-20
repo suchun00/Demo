@@ -2,6 +2,7 @@ package com.sc.utils;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.sc.testdemo.R;
@@ -12,9 +13,11 @@ import com.sc.testdemo.R;
 public class ViewHolder {
     public TextView tv;
     public EditText et;
+    public Spinner spinner;
 
-    public ViewHolder(View convertView){
+    /*public ViewHolder(View convertView){
         tv = ((TextView)convertView.findViewById(R.id.tv));
         et = ((EditText) convertView.findViewById(R.id.et));
-    }
+        spinner = ((Spinner) convertView.findViewById(R.id.spinner));
+    }*/
 }

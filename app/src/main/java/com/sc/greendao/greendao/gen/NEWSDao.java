@@ -25,9 +25,14 @@ public class NEWSDao extends AbstractDao<NEWS, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Number = new Property(1, String.class, "number", false, "NUMBER");
-        public final static Property Content = new Property(2, String.class, "content", false, "CONTENT");
-        public final static Property Date = new Property(3, String.class, "date", false, "DATE");
+        public final static Property Patch = new Property(1, String.class, "patch", false, "PATCH");
+        public final static Property Asset = new Property(2, String.class, "asset", false, "ASSET");
+        public final static Property Plant = new Property(3, String.class, "plant", false, "PLANT");
+        public final static Property Process = new Property(4, String.class, "process", false, "PROCESS");
+        public final static Property Username = new Property(5, String.class, "username", false, "USERNAME");
+        public final static Property Content = new Property(6, String.class, "content", false, "CONTENT");
+        public final static Property Sender = new Property(7, String.class, "sender", false, "SENDER");
+        public final static Property Date = new Property(8, String.class, "date", false, "DATE");
     };
 
 
@@ -44,9 +49,14 @@ public class NEWSDao extends AbstractDao<NEWS, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"NEWS\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"NUMBER\" TEXT," + // 1: number
-                "\"CONTENT\" TEXT," + // 2: content
-                "\"DATE\" TEXT);"); // 3: date
+                "\"PATCH\" TEXT," + // 1: patch
+                "\"ASSET\" TEXT," + // 2: asset
+                "\"PLANT\" TEXT," + // 3: plant
+                "\"PROCESS\" TEXT," + // 4: process
+                "\"USERNAME\" TEXT," + // 5: username
+                "\"CONTENT\" TEXT," + // 6: content
+                "\"SENDER\" TEXT," + // 7: sender
+                "\"DATE\" TEXT);"); // 8: date
     }
 
     /** Drops the underlying database table. */
@@ -64,19 +74,44 @@ public class NEWSDao extends AbstractDao<NEWS, Long> {
             stmt.bindLong(1, id);
         }
  
-        String number = entity.getNumber();
-        if (number != null) {
-            stmt.bindString(2, number);
+        String patch = entity.getPatch();
+        if (patch != null) {
+            stmt.bindString(2, patch);
+        }
+ 
+        String asset = entity.getAsset();
+        if (asset != null) {
+            stmt.bindString(3, asset);
+        }
+ 
+        String plant = entity.getPlant();
+        if (plant != null) {
+            stmt.bindString(4, plant);
+        }
+ 
+        String process = entity.getProcess();
+        if (process != null) {
+            stmt.bindString(5, process);
+        }
+ 
+        String username = entity.getUsername();
+        if (username != null) {
+            stmt.bindString(6, username);
         }
  
         String content = entity.getContent();
         if (content != null) {
-            stmt.bindString(3, content);
+            stmt.bindString(7, content);
+        }
+ 
+        String sender = entity.getSender();
+        if (sender != null) {
+            stmt.bindString(8, sender);
         }
  
         String date = entity.getDate();
         if (date != null) {
-            stmt.bindString(4, date);
+            stmt.bindString(9, date);
         }
     }
 
@@ -89,19 +124,44 @@ public class NEWSDao extends AbstractDao<NEWS, Long> {
             stmt.bindLong(1, id);
         }
  
-        String number = entity.getNumber();
-        if (number != null) {
-            stmt.bindString(2, number);
+        String patch = entity.getPatch();
+        if (patch != null) {
+            stmt.bindString(2, patch);
+        }
+ 
+        String asset = entity.getAsset();
+        if (asset != null) {
+            stmt.bindString(3, asset);
+        }
+ 
+        String plant = entity.getPlant();
+        if (plant != null) {
+            stmt.bindString(4, plant);
+        }
+ 
+        String process = entity.getProcess();
+        if (process != null) {
+            stmt.bindString(5, process);
+        }
+ 
+        String username = entity.getUsername();
+        if (username != null) {
+            stmt.bindString(6, username);
         }
  
         String content = entity.getContent();
         if (content != null) {
-            stmt.bindString(3, content);
+            stmt.bindString(7, content);
+        }
+ 
+        String sender = entity.getSender();
+        if (sender != null) {
+            stmt.bindString(8, sender);
         }
  
         String date = entity.getDate();
         if (date != null) {
-            stmt.bindString(4, date);
+            stmt.bindString(9, date);
         }
     }
 
@@ -114,9 +174,14 @@ public class NEWSDao extends AbstractDao<NEWS, Long> {
     public NEWS readEntity(Cursor cursor, int offset) {
         NEWS entity = new NEWS( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // number
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // content
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // date
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // patch
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // asset
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // plant
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // process
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // username
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // content
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // sender
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // date
         );
         return entity;
     }
@@ -124,9 +189,14 @@ public class NEWSDao extends AbstractDao<NEWS, Long> {
     @Override
     public void readEntity(Cursor cursor, NEWS entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setNumber(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setContent(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setDate(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setPatch(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setAsset(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setPlant(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setProcess(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUsername(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setContent(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setSender(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setDate(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
      }
     
     @Override

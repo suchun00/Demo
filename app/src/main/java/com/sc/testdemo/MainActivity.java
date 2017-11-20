@@ -1,13 +1,12 @@
 package com.sc.testdemo;
 
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,14 +15,26 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.sc.utils.DBUtils;
+import com.sc.utils.Scan;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.bt1)
@@ -50,14 +61,21 @@ public class MainActivity extends AppCompatActivity {
     EditText username;
     @BindView(R.id.name)
     EditText name;
-    private NotificationManager manager;
+
+    /*private NotificationManager manager;
     private int messageNotificationID = 1000;
     private Notification notification1;
-    private PendingIntent pi;
+    private PendingIntent pi;*/
     private AsyncHttpClient client;
+    private List<Map<String, String>> list;
     String workshop;
     String process;
-    DBUtils dbUtils = new DBUtils();
+    String m_strresult = "";
+    public Handler mHandler = new MainHandler();
+    String jsonString="";
+    String rfid;
+    String msg;
+    Scan scans = new Scan();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +83,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         init();
+
+
+        /*
+        * 扫描批次标签
+        * */
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scans.startScan(MainActivity.this, mHandler);
+            }
+        });
         /**
          * 消息推送
          */
@@ -72,17 +101,43 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 client = new AsyncHttpClient();
-                RequestParams params = new RequestParams();
-                params.put("asset", asset.getText().toString().trim());
-                params.put("content", content.getText().toString().trim());
-                params.put("number", name.getText().toString().trim());//数据库需重新设计
-                //String url = "http://172.23.0.182:8088/upload/abnormal/send.action";
-                String url = dbUtils.getNetAddress();
-                client.get(url, params, new AsyncHttpResponseHandler() {
+                list = initData();
+                //数据库需重新设计
+                String url = DBUtils.getIp()+"MES/mess/receiveMess.action";
+                try {
+                    Gson gson = new Gson();
+                    jsonString = gson.toJson(list);
+                    StringEntity stringEntity;
+                    stringEntity = new StringEntity(jsonString, "utf-8");
+                    client.put(MainActivity.this, url, stringEntity, "application/json;charset=utf-8", new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            if(responseBody!=null){
+                                String result = new String(responseBody);
+                                try {
+                                    JSONObject obj = new JSONObject(result);
+                                    msg = (String) obj.get("msg");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                if(msg.equals("推送成功"))
+                                Toast.makeText(MainActivity.this, "推送成功", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Toast.makeText(MainActivity.this, "数据请求失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } catch (UnsupportedCharsetException e) {
+                    e.printStackTrace();
+                }
+                /*client.get(url, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         try {
-                            /*JSONObject obj =null;
+                            *//*JSONObject obj =null;
                             String jsonData = new String(responseBody, "utf-8");
                             JSONObject result = new JSONObject(jsonData);
                             if(result!=null) {
@@ -93,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                                 System.out.println("neirong----" + content);
                                 System.out.println("neirong----" + date);
                                 System.out.println("neirong----" + number);
-                                notification(content, number, date);*/
+                                notification(content, number, date);*//*
                             Toast.makeText(getApplicationContext(), "推送成功", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -103,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         Toast.makeText(getApplicationContext(), "数据请求失败", Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
             }
         });
         /**
@@ -113,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, PushSmsService.class);
-                //intent.putExtra("number" , et1.getText().toString().trim());
                 startService(intent);
             }
         });
@@ -138,6 +192,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private List<Map<String, String>> initData() {
+        List<Map<String, String>> list1 = new ArrayList<Map<String, String>>();
+        Map<String, String> map = new HashMap<>();
+        //map.put("plan_no", rfid);
+        map.put("plan_no", order.getText().toString().trim());
+        map.put("shop_name", workshop);
+        map.put("process_name", process);
+        map.put("operator", username.getText().toString().trim());
+        map.put("asset_no", asset.getText().toString().trim());
+        map.put("content", content.getText().toString().trim());
+        map.put("sender", name.getText().toString().trim());
+        list1.add(map);
+        return list1;
+    }
+
     private void init() {
         ArrayAdapter<CharSequence> workadapter = ArrayAdapter.createFromResource(this,
                 R.array.workshop, android.R.layout.simple_spinner_item);
@@ -149,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 process = spinner2.getSelectedItem().toString();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -156,26 +226,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void notification(String content, String number, String date) {
-        // 获取系统的通知管理器
-        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification.Builder builder1 = new Notification.Builder(getApplicationContext());
-        builder1.setSmallIcon(R.drawable.message);
-        builder1.setWhen(System.currentTimeMillis());
-        builder1.setContentTitle("通知");
-        builder1.setContentText(content);
-        builder1.setDefaults(Notification.DEFAULT_ALL);
-        builder1.setAutoCancel(true);
-        Intent intent = new Intent(getApplicationContext(), ContentActivity.class);
-        intent.putExtra("content", content);
-        intent.putExtra("number", number);
-        intent.putExtra("date", date);
-        pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder1.setContentIntent(pi);
-        notification1 = builder1.getNotification();
-        manager.notify(messageNotificationID, notification1);
-        messageNotificationID++;
-    }
     class spinnerItemSelected implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -186,19 +236,37 @@ public class MainActivity extends AppCompatActivity {
                     R.array.def, android.R.layout.simple_spinner_item);
             processadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             //处理车间工序联动显示
-            if(ws.equals("冲压车间")) {
-                 processadapter = ArrayAdapter.createFromResource(MainActivity.this,
+            if (ws.equals("冲压车间")) {
+                processadapter = ArrayAdapter.createFromResource(MainActivity.this,
                         R.array.冲压车间, android.R.layout.simple_spinner_item);
                 processadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            }else if(ws.equals("仪表车间")){
-                 processadapter = ArrayAdapter.createFromResource(MainActivity.this,
+            } else if (ws.equals("仪表车间")) {
+                processadapter = ArrayAdapter.createFromResource(MainActivity.this,
                         R.array.仪表车间, android.R.layout.simple_spinner_item);
                 processadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             }
             spinner2.setAdapter(processadapter);
         }
+
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
+        }
+    }
+    public class MainHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what != 0) {
+                if (m_strresult.indexOf((String) msg.obj) < 0) {
+                    m_strresult = "";
+                    m_strresult += (String) msg.obj;
+                    Log.e("222", m_strresult);
+                    rfid = DBUtils.getRfid(m_strresult, "批次标签");
+                    order.setText(rfid);
+                    Toast.makeText(MainActivity.this, "RFID标签信息获取成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "RFID标签信息获取不成功，请重试", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 

@@ -27,6 +27,8 @@ public class ContentActivity extends Activity {
     EditText etName;
     @BindView(R.id.et_date1)
     EditText etDate1;
+    @BindView(R.id.et_username)
+    EditText etUsername;
 
 
     @Override
@@ -36,14 +38,22 @@ public class ContentActivity extends Activity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         if (intent != null) {
+            String patch = intent.getStringExtra("patch");
             String asset = intent.getStringExtra("asset");
+            String plant = intent.getStringExtra("plant");
+            String process = intent.getStringExtra("process");
+            String username = intent.getStringExtra("username");
             String content = intent.getStringExtra("content");
-            String number = intent.getStringExtra("number");
+            String sender = intent.getStringExtra("sender");
             String date = intent.getStringExtra("date");
             System.out.println("时间-----" + date);
+            etOrder.setText(patch);
             etAsset.setText(asset);
+            etPlant.setText(plant);
+            etProcess.setText(process);
+            etUsername.setText(username);
             etContent.setText(content);
-            etName.setText(number);
+            etName.setText(sender);
             etDate1.setText(date);
         }
     }

@@ -11,14 +11,12 @@ import org.greenrobot.greendao.internal.DaoConfig;
 import com.sc.entity.IpAddress;
 import com.sc.entity.NetAddress;
 import com.sc.entity.NEWS;
-import com.sc.entity.RecordCount;
 import com.sc.entity.RecordNum;
 import com.sc.entity.RfidLabels;
 
 import com.sc.greendao.greendao.gen.IpAddressDao;
 import com.sc.greendao.greendao.gen.NetAddressDao;
 import com.sc.greendao.greendao.gen.NEWSDao;
-import com.sc.greendao.greendao.gen.RecordCountDao;
 import com.sc.greendao.greendao.gen.RecordNumDao;
 import com.sc.greendao.greendao.gen.RfidLabelsDao;
 
@@ -34,14 +32,12 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig ipAddressDaoConfig;
     private final DaoConfig netAddressDaoConfig;
     private final DaoConfig nEWSDaoConfig;
-    private final DaoConfig recordCountDaoConfig;
     private final DaoConfig recordNumDaoConfig;
     private final DaoConfig rfidLabelsDaoConfig;
 
     private final IpAddressDao ipAddressDao;
     private final NetAddressDao netAddressDao;
     private final NEWSDao nEWSDao;
-    private final RecordCountDao recordCountDao;
     private final RecordNumDao recordNumDao;
     private final RfidLabelsDao rfidLabelsDao;
 
@@ -58,9 +54,6 @@ public class DaoSession extends AbstractDaoSession {
         nEWSDaoConfig = daoConfigMap.get(NEWSDao.class).clone();
         nEWSDaoConfig.initIdentityScope(type);
 
-        recordCountDaoConfig = daoConfigMap.get(RecordCountDao.class).clone();
-        recordCountDaoConfig.initIdentityScope(type);
-
         recordNumDaoConfig = daoConfigMap.get(RecordNumDao.class).clone();
         recordNumDaoConfig.initIdentityScope(type);
 
@@ -70,14 +63,12 @@ public class DaoSession extends AbstractDaoSession {
         ipAddressDao = new IpAddressDao(ipAddressDaoConfig, this);
         netAddressDao = new NetAddressDao(netAddressDaoConfig, this);
         nEWSDao = new NEWSDao(nEWSDaoConfig, this);
-        recordCountDao = new RecordCountDao(recordCountDaoConfig, this);
         recordNumDao = new RecordNumDao(recordNumDaoConfig, this);
         rfidLabelsDao = new RfidLabelsDao(rfidLabelsDaoConfig, this);
 
         registerDao(IpAddress.class, ipAddressDao);
         registerDao(NetAddress.class, netAddressDao);
         registerDao(NEWS.class, nEWSDao);
-        registerDao(RecordCount.class, recordCountDao);
         registerDao(RecordNum.class, recordNumDao);
         registerDao(RfidLabels.class, rfidLabelsDao);
     }
@@ -86,7 +77,6 @@ public class DaoSession extends AbstractDaoSession {
         ipAddressDaoConfig.getIdentityScope().clear();
         netAddressDaoConfig.getIdentityScope().clear();
         nEWSDaoConfig.getIdentityScope().clear();
-        recordCountDaoConfig.getIdentityScope().clear();
         recordNumDaoConfig.getIdentityScope().clear();
         rfidLabelsDaoConfig.getIdentityScope().clear();
     }
@@ -101,10 +91,6 @@ public class DaoSession extends AbstractDaoSession {
 
     public NEWSDao getNEWSDao() {
         return nEWSDao;
-    }
-
-    public RecordCountDao getRecordCountDao() {
-        return recordCountDao;
     }
 
     public RecordNumDao getRecordNumDao() {
